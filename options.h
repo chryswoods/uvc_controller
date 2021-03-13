@@ -18,6 +18,8 @@ namespace UVC
 
         std::string toString() const;
 
+        Controller getOption(int i) const;
+
     private:
         void populate(UVCDevice device);
         void add(Controller c);

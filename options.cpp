@@ -56,15 +56,36 @@ uvc_set_function_t create_set_function(FUNC *func)
     return f;
 }
 
+Controller Options::getOption(int i) const
+{
+    for (auto opt : opts)
+    {
+        if (opt.second.isAvailable())
+        {
+            i -= 1;
+            if (i == 0){
+                return opt.second;
+            }
+        }
+    }
+
+    throw std::runtime_error("Invalid option");
+}
+
 std::string Options::toString() const
 {
     std::string out;
+
+    int i = 1;
 
     for (auto opt : opts)
     {
         if (opt.second.isAvailable())
         {
-            out += opt.second.toString() + "\n";
+            out += "[" + std::to_string(i) + "]: " + 
+                    opt.second.toString() + "\n";
+            
+            i += 1;
         }
     }
 
