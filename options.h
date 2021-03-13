@@ -4,6 +4,7 @@
 #include <map>
 
 #include "controller.h"
+#include "uvcdevice.h"
 
 namespace UVC
 {
@@ -23,11 +24,15 @@ namespace UVC
         void saveToFile(const std::string &filename) const;
         void loadFromFile(const std::string &filename);
 
+        void rescan();
+
     private:
         void populate(UVCDevice device);
         void add(Controller c);
 
         std::map<std::string, Controller> opts;
+
+        UVCDevice _device;
     };
 }
 

@@ -123,6 +123,7 @@ int main(int argc, char **argv)
               }
           }
 
+          options.rescan();
           continue;
       }
       catch(const std::exception& e)

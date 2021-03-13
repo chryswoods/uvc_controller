@@ -1,6 +1,5 @@
 
 #include "options.h"
-#include "uvcdevice.h"
 #include "controller.h"
 
 #include <iostream>
@@ -145,6 +144,12 @@ void Options::add(Controller c)
     }
 }
 
+void Options::rescan()
+{
+    if (_device.isOpen())
+        this->populate(_device);
+}
+
 void Options::populate(UVCDevice device)
 {
     opts = std::map<std::string, Controller>();
@@ -249,4 +254,5 @@ void Options::populate(UVCDevice device)
                     create_get_function<uint16_t>(&uvc_get_digital_multiplier),
                     create_set_function<uint16_t>(&uvc_set_digital_multiplier)));
 
+    _device = device;
 }
