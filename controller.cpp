@@ -54,6 +54,11 @@ Controller& Controller::operator=(const Controller &other)
     return *this;
 }
 
+bool Controller::isAvailable() const
+{
+    return this->_device.isOpen();
+}
+
 std::string Controller::toString() const
 {
     if (not this->_device.isOpen())

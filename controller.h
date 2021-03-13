@@ -34,6 +34,8 @@ namespace UVC
         
         std::string toString() const;
 
+        bool isAvailable() const;
+
         int getCurrent() const;
         int getDefault() const;
         int getMinimum() const;

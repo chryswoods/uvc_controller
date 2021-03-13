@@ -20,6 +20,7 @@ namespace UVC
 
     private:
         void populate(UVCDevice device);
+        void add(Controller c);
 
         std::map<std::string, Controller> opts;
     };
