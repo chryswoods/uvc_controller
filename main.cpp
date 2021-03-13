@@ -30,6 +30,44 @@ int main(int argc, char **argv)
         std::cout << "Quit :-)\n";
         break;
       }
+      else if (option == "s"){
+        std::cout << "Save to file - what filename?\n";
+
+        std::string filename;
+        std::cin >> filename;
+
+        std::cout << "Writing to file " + filename + "\n";
+
+        try
+        {
+            options.saveToFile(filename);
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Could not write the file!\n";
+        }
+
+        continue;
+      }
+      else if (option == "l") {
+        std::cout << "Load from file - what filename?\n";
+
+        std::string filename;
+        std::cin >> filename;
+
+        std::cout << "Reading file " << filename << "\n";
+
+        try
+        {
+          options.loadFromFile(filename);
+        }
+        catch(const std::exception& e)
+        {
+          std::cout << "Could not read from the file\n";
+        }
+
+        continue;
+      }
 
       try
       {

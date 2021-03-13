@@ -4,6 +4,7 @@
 #include "controller.h"
 
 #include <iostream>
+#include <fstream>
 
 using namespace UVC;
 
@@ -90,6 +91,50 @@ std::string Options::toString() const
     }
 
     return out;
+}
+
+void Options::loadFromFile(const std::string &filename)
+{
+    std::ifstream file;
+    file.open(filename);
+
+    std::string option, value;
+    while (std::getline(file, option))
+    {
+        if (not std::getline(file, value))
+        {
+            break;
+        }
+
+        try
+        {
+            opts[option].setCurrent(std::stoi(value));
+            std::cout << "Set " << option << " to " << value << std::endl;
+        }
+        catch(const std::exception &e)
+        {
+            std::cout << "Cannot set " << option << " to " << value << std::endl;
+        }
+    }
+
+    file.close();
+}
+
+void Options::saveToFile(const std::string &filename) const
+{
+    std::ofstream file;
+    file.open(filename);
+
+    for (auto opt : opts)
+    {
+        if (opt.second.isAvailable())
+        {
+            file << opt.second.getName() << "\n" <<
+                    opt.second.getCurrent() << "\n";
+        }
+    }
+
+    file.close();
 }
 
 void Options::add(Controller c)
