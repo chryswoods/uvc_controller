@@ -35,7 +35,7 @@ This assumes that your `libuvc` is installed in `/usr/local`. If it isn't
 then edit `Makefile` and change `INCLUDE_DIR` and `LIB_DIR` to the 
 right paths.
 
-## Usage
+## Usage
 
 Running the program will enter a simple text interface, e.g.
 
