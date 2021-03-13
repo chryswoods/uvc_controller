@@ -3,6 +3,7 @@
 
 #include <exception>
 #include <iostream>
+#include <string>
 
 using namespace UVC;
 
@@ -53,6 +54,20 @@ Controller& Controller::operator=(const Controller &other)
     return *this;
 }
 
+std::string Controller::toString() const
+{
+    if (not this->_device.isOpen())
+    {
+        return this->_name + " : Not available";
+    }
+
+    return this->_name + " : " + 
+           std::to_string(this->_minimum) + " <= " +
+           std::to_string(this->_current) + " <= " +
+           std::to_string(this->_maximum) + " : default " +
+           std::to_string(this->_default);
+}
+
 const std::string& Controller::getName() const
 {
     return this->_name;
@@ -84,6 +99,12 @@ void Controller::populate()
     {
         this->_current = this->_get_function(this->_device,
                                              UVC_GET_CUR);
+        this->_maximum = this->_get_function(this->_device,
+                                             UVC_GET_MAX);
+        this->_minimum = this->_get_function(this->_device,
+                                             UVC_GET_MIN);
+        this->_default = this->_get_function(this->_device,
+                                             UVC_GET_DEF);
     } 
     catch (std::exception &e)
     {

@@ -32,6 +32,8 @@ namespace UVC
 
         const std::string& getName() const;
         
+        std::string toString() const;
+
         int getCurrent() const;
         int getDefault() const;
         int getMinimum() const;

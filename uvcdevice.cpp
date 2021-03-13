@@ -34,7 +34,7 @@ void UVCDevice::open()
     uvc_error_t err;
     err = uvc_init(&ctx, NULL);
 
-    if (err < 0) {
+    if (err != 0) {
         uvc_perror(err, "uvc_init");
         this->close();
         return;
@@ -46,7 +46,7 @@ void UVCDevice::open()
                     0, 0, NULL); 
                     /* filter devices: vendor_id, product_id, "serial_num" */
     
-    if (err < 0) {
+    if (err != 0) {
         uvc_perror(err, "uvc_find_device"); /* no devices found */
         this->close();
         return;
@@ -54,7 +54,7 @@ void UVCDevice::open()
 
     /* Try to open the device: requires exclusive access */
     err = uvc_open(dev, &devh);
-    if (err < 0) {
+    if (err != 0) {
         uvc_perror(err, "uvc_open"); /* unable to open device */
         this->close();
         return;
