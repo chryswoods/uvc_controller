@@ -12,13 +12,39 @@ int main(int argc, char **argv)
 
   device.open();
 
+  if (not device.isOpen())
+  {
+      std::cout << "Could not open the device. Sorry.\n";
+      return 0;
+  }
+
   Options options(device);
+
+  if (argc >= 2)
+  {
+      //load the file from the command line
+      std::string filename(argv[1]);
+      std::cout << "Loading from file " << filename << "\n";
+
+      try
+      {
+          options.loadFromFile(filename);
+      }
+      catch(const std::exception& e)
+      {
+          std::cout << "Problem loading from file?\n";
+      }
+
+      std::cout << options.toString();
+      
+      return 0;
+  }
 
   while (true)
   {
       std::cout << "\n" << options.toString();
 
-      std::cout << "\nChoose an option... (use q to quit)\n";
+      std::cout << "\nChoose an option... (use q to quit, s to save, l to load)\n";
 
       std::string option;
 
