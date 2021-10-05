@@ -3,6 +3,7 @@
 #include "options.h"
 
 #include <iostream>
+#include <sstream>
 
 using namespace UVC;
 
@@ -40,99 +41,64 @@ int main(int argc, char **argv)
       return 0;
   }
 
+  int opt = 0;
   while (true)
   {
-      std::cout << "\n" << options.toString();
+      std::string cmd, arg;
+      std::cout << "Enter 'q', 's filename', 'l filename' or 'X V' to set X-th parameter to V\n";
+      std::cout << options.toString(opt);
+      std::cout << "?> ";
+      std::cin >> cmd;
 
-      std::cout << "\nChoose an option... (use q to quit, s to save, l to load)\n";
-
-      std::string option;
-
-      std::cin >> option;
-
-      std::cout << "You have chosen " << option << std::endl;
-
-      if (option == "q"){
-        std::cout << "Quit :-)\n";
-        break;
-      }
-      else if (option == "s"){
-        std::cout << "Save to file - what filename?\n";
-
-        std::string filename;
-        std::cin >> filename;
-
-        std::cout << "Writing to file " + filename + "\n";
-
-        try
-        {
-            options.saveToFile(filename);
-        }
-        catch (const std::exception &e)
-        {
-            std::cout << "Could not write the file!\n";
-        }
-
-        continue;
-      }
-      else if (option == "l") {
-        std::cout << "Load from file - what filename?\n";
-
-        std::string filename;
-        std::cin >> filename;
-
-        std::cout << "Reading file " << filename << "\n";
-
-        try
-        {
-          options.loadFromFile(filename);
-        }
-        catch(const std::exception& e)
-        {
-          std::cout << "Could not read from the file\n";
-        }
-
-        continue;
-      }
-
-      try
-      {
-          auto o = options.getOption(std::stoi(option));
-
-          while (true)
-          {
-              std::cout << "\n" + o.toString() << "\n";
-              std::cout << "Set the value\n";
-              
-              std::string value;
-              std::cin >> value;
-
-              if (value == "q"){
-                break;
-              }
-
-              try
-              {
-                  std::cout << "Setting value to " << value << "\n";
-                  o.setCurrent(std::stoi(value));
-              }
-              catch(const std::exception &e)
-              {
-                  std::cout << "Cannot set the value!\n";
-                  break;
-              }
-          }
-
-          options.rescan();
+      if ( cmd.size() < 1 )
           continue;
-      }
-      catch(const std::exception& e)
+      if ( cmd == "q" )
+          break;
+      if ( cmd == "s" )
       {
-          std::cout << "Invalid option!\n";
+          try {
+              std::cin >> arg;
+              options.saveToFile(arg);
+              std::cout << "Saved to `"+arg+"`\n";
+              opt = 0;
+          }
+          catch (const std::exception &e) {
+              std::cout << "Could not save to file!\n";
+          }
       }
+      if ( cmd == "l" )
+      {
+          try {
+              std::cin >> arg;
+              options.loadFromFile(arg);
+              std::cout << "Loaded from `"+arg+"`\n";
+              opt = 0;
+          }
+          catch(const std::exception& e) {
+              std::cout << "Could not load from file!\n";
+          }
+      }
+      if ( isdigit(cmd[0]) )
+      {
+          int val = 0;
+          try
+          {
+              std::cin >> arg;
+              opt = std::stoi(cmd);
+              val = std::stoi(arg);
+              auto o = options.getOption(opt);
+              o.setCurrent(val);
+          }
+          catch(const std::exception &e)
+          {
+              std::cout << "Cannot set [" << opt << "] <- " << val << "\n";
+              continue;
+          }
+      }
+      options.rescan();
   }
 
+  std::cout << "Goodbye :-)\n";
   device.close();
-
   return 0;
 }
