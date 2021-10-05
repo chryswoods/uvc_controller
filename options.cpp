@@ -72,7 +72,7 @@ Controller Options::getOption(int i) const
     throw std::runtime_error("Invalid option");
 }
 
-std::string Options::toString() const
+std::string Options::toString(int s) const
 {
     std::string out;
 
@@ -82,7 +82,8 @@ std::string Options::toString() const
     {
         if (opt.second.isAvailable())
         {
-            out += "[" + std::to_string(i) + "]: " + 
+            if ( s == 0 || s == i )
+            out += "      [" + std::to_string(i) + "]: " + 
                     opt.second.toString() + "\n";
             
             i += 1;
