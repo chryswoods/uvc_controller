@@ -17,7 +17,7 @@ namespace UVC
         Options(UVCDevice device);
         ~Options();
 
-        std::string toString() const;
+        std::string toString(int = 0) const;
 
         Controller getOption(int i) const;
 
